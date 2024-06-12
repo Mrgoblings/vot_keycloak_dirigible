@@ -1,22 +1,55 @@
 version: '3.8'
 
 services:
-  postgres:
+  postgres_primary:
     image: postgres:14
-    container_name: keycloak_postgres
+    container_name: postgres_primary
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloak
+      POSTGRES_REPLICATION_USER: replicator
+      POSTGRES_REPLICATION_PASSWORD: replicator_password
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_primary_data:/var/lib/postgresql/data
+      - ./primary/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./primary/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - postgres_archive:/var/lib/postgresql/data/archive
+    ports:
+      - "5432:5432"
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+
+  postgres_standby:
+    image: postgres:14
+    container_name: postgres_standby
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+      POSTGRES_REPLICATION_USER: replicator
+      POSTGRES_REPLICATION_PASSWORD: replicator_password
+      PRIMARY_HOST: postgres_primary
+    volumes:
+      - postgres_standby_data:/var/lib/postgresql/data
+      - ./standby/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./standby/pg_hba.conf:/etc/postgresql/pg_hba.conf
+    ports:
+      - "5433:5432"
+    depends_on:
+      - postgres_primary
+    command: >
+      bash -c "
+        until pg_isready --host=postgres_primary --port=5432; do sleep 1; done;
+        pg_basebackup -h postgres_primary -D /var/lib/postgresql/data -U replicator -v -P --wal-method=stream;
+        postgres -c config_file=/etc/postgresql/postgresql.conf
+      "
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
     environment:
       DB_VENDOR: postgres
-      DB_ADDR: postgres
+      DB_ADDR: postgres_primary
       DB_DATABASE: keycloak
       DB_USER: keycloak
       DB_PASSWORD: keycloak
@@ -25,9 +58,12 @@ services:
     ports:
       - "2000:8080"
     depends_on:
-      - postgres
+      - postgres_primary
+      - postgres_standby
     command:
       - start-dev
 
 volumes:
-  postgres_data:
+  postgres_primary_data:
+  postgres_standby_data:
+  postgres_archive:
