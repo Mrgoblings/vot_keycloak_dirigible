@@ -44,12 +44,23 @@ services:
         postgres -c config_file=/etc/postgresql/postgresql.conf
       "
 
+  haproxy:
+    image: haproxy:latest
+    container_name: haproxy
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    ports:
+      - "5434:5432"
+    depends_on:
+      - postgres_primary
+      - postgres_standby
+
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
     environment:
       DB_VENDOR: postgres
-      DB_ADDR: postgres_primary
+      DB_ADDR: haproxy
       DB_DATABASE: keycloak
       DB_USER: keycloak
       DB_PASSWORD: keycloak
@@ -58,8 +69,7 @@ services:
     ports:
       - "2000:8080"
     depends_on:
-      - postgres_primary
-      - postgres_standby
+      - haproxy
     command:
       - start-dev
 
