@@ -25,22 +25,17 @@ To install and run the project locally, follow these steps:
     cd your-repo
     ```
 
-3. Set up the environment variables:
-    ```
-    // Add instructions here to configure the environment variables
-    ```
-
-4. Start the development cluster:
+3. Start the development cluster:
     ```
     docker-compose -f docker-compose.dev.yml up -d
     ```
 
-5. Start the production cluster:
+4. Start the production cluster:
     ```
     docker-compose -f docker-compose.prod.yml up -d
     ```
 
-6. Open your browser and visit `http://localhost:3000` to access the application.
+5. Open your browser and visit `http://localhost:3000` to access the application.
 
 ## Usage
 Once the project is up and running, you can start using the application. Here's a brief overview of the project's features:
@@ -66,11 +61,10 @@ We welcome contributions from the community! If you'd like to contribute to our 
 
 3. Submit a pull request with a clear description of your changes.
 
-4. Our team will review your contribution and merge it if it meets our quality standards.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
 
 We hope you find our Docker Compose project helpful in setting up your application environment. If you have any questions or encounter any issues, please don't hesitate to reach out to us.
 
-Happy coding!
+Happy coding! :D
