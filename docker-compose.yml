@@ -59,16 +59,61 @@ services:
     build: ./keycloak
     container_name: keycloak
     environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: haproxy
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: keycloak
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - "2000:8080"
     depends_on:
       - haproxy
-    command:
-      - start --optimized
+    command: start --optimized
+
+  FrontEnd:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: dirigible_service1
+    networks:
+      - dirigible_network
+    ports:
+      - "8081:8080"  # Map host port 8081 to container port 8080
+    environment:
+      - SERVICE_NAME=service1  # Name of your service as registered in Keycloak
+
+  BackEnd:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: dirigible_service2
+    networks:
+      - dirigible_network
+    ports:
+      - "8082:8080"  # Map host port 8082 to container port 8080
+    environment:
+      - SERVICE_NAME=service2  # Name of your service as registered in Keycloak
+
+  FullStack:
+    build:
+      context: .
+      dockerfile: Dockerfile.fullstack
+    container_name: dirigible_service3
+    networks:
+      - dirigible_network
+    ports:
+      - "8083:8080"  # Map host port 8083 to container port 8080
+    environment:
+      - SERVICE_NAME=service3  # Name of your service as registered in Keycloak
+      - DIRIGIBLE_HOME_URL=/services/web/alien_service/gen/index.html
 
 volumes:
   postgres_primary_data:
   postgres_standby_data:
   postgres_archive:
+
+networks:
+  dirigible_network:
+    driver: bridge

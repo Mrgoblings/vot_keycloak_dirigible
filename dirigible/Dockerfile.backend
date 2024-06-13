@@ -1,0 +1,7 @@
+FROM dirigiblelabs/dirigible:latest
+
+COPY tabler/gen/api target/dirigible/repository/root/registry/public/tabler/gen/api
+COPY tabler/gen/dao target/dirigible/repository/root/registry/public/tabler/gen/dao
+COPY tabler/gen/odata target/dirigible/repository/root/registry/public/tabler/gen/odata
+COPY tabler/gen/schema target/dirigible/repository/root/registry/public/tabler/gen/schema
+COPY tabler/gen/alien.openapi target/dirigible/repository/root/registry/public/tabler/gen/alien.openapi
