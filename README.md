@@ -1,4 +1,4 @@
-# Docker Keycloak Postgre w/ 2 clusters project (DKP2C project)
+# Docker Keycloak Postgre w/ 2 clusters project (DKP2C project) - Tabler
 
 Welcome to our Docker Compose project! This README will guide you through the setup and usage of our application.
 
