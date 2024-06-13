@@ -13,8 +13,8 @@ services:
     volumes:
       - ./primary/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./primary/pg_hba.conf:/etc/postgresql/pg_hba.conf
-      - postgres_primary_data:/var/lib/postgresql/data
-      - postgres_archive:/var/lib/postgresql/data/archive
+      - postgres_primary_data:/var/lib/postgresql/data_primary
+      - postgres_archive:/var/lib/postgresql/data_primary/archive
     ports:
       - "5432:5432"
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
@@ -32,7 +32,7 @@ services:
     volumes:
       - ./standby/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./standby/pg_hba.conf:/etc/postgresql/pg_hba.conf
-      - postgres_standby_data:/var/lib/postgresql/data
+      - postgres_standby_data:/var/lib/postgresql/data_standby
     ports:
       - "5433:5432"
     depends_on:
@@ -72,41 +72,41 @@ services:
       - haproxy
     command: start --optimized
 
-  frontend:
-    build:
-      context: .
-      dockerfile: dirigible/Dockerfile.frontend
-    container_name: dirigible_frontend
-    networks:
-      - dirigible_network
-    ports:
-      - "8081:8080"  # Map host port 8081 to container port 8080
-    environment:
-      - SERVICE_NAME=service1  # Name of your service as registered in Keycloak
+  # frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: dirigible/Dockerfile.frontend
+  #   container_name: dirigible_frontend
+  #   networks:
+  #     - dirigible_network
+  #   ports:
+  #     - "8081:8080"  # Map host port 8081 to container port 8080
+  #   environment:
+  #     - SERVICE_NAME=service1  # Name of your service as registered in Keycloak
 
-  backend:
-    build:
-      context: .
-      dockerfile: dirigible/Dockerfile.backend
-    container_name: dirigible_backend
-    networks:
-      - dirigible_network
-    ports:
-      - "8082:8080"  # Map host port 8082 to container port 8080
-    environment:
-      - SERVICE_NAME=service2  # Name of your service as registered in Keycloak
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: dirigible/Dockerfile.backend
+  #   container_name: dirigible_backend
+  #   networks:
+  #     - dirigible_network
+  #   ports:
+  #     - "8082:8080"  # Map host port 8082 to container port 8080
+  #   environment:
+  #     - SERVICE_NAME=service2  # Name of your service as registered in Keycloak
 
-  fullstack:
-    build:
-      context: .
-      dockerfile: dirigible/Dockerfile.fullstack
-    container_name: dirigible_fullstack
-    networks:
-      - dirigible_network
-    ports:
-      - "8083:8080"  # Map host port 8083 to container port 8080
-    environment:
-      - SERVICE_NAME="tabler fullstack  # Name of your service as registered in Keycloak
+  # fullstack:
+  #   build:
+  #     context: .
+  #     dockerfile: dirigible/Dockerfile.fullstack
+  #   container_name: dirigible_fullstack
+  #   networks:
+  #     - dirigible_network
+  #   ports:
+  #     - "8083:8080"  # Map host port 8083 to container port 8080
+  #   environment:
+  #     - SERVICE_NAME="tabler fullstack  # Name of your service as registered in Keycloak
 
 volumes:
   postgres_primary_data:
