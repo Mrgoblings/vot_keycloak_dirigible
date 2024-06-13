@@ -72,11 +72,11 @@ services:
       - haproxy
     command: start --optimized
 
-  FrontEnd:
+  frontend:
     build:
       context: .
-      dockerfile: Dockerfile.frontend
-    container_name: dirigible_service1
+      dockerfile: dirigible/Dockerfile.frontend
+    container_name: dirigible_frontend
     networks:
       - dirigible_network
     ports:
@@ -84,11 +84,11 @@ services:
     environment:
       - SERVICE_NAME=service1  # Name of your service as registered in Keycloak
 
-  BackEnd:
+  backend:
     build:
       context: .
-      dockerfile: Dockerfile.backend
-    container_name: dirigible_service2
+      dockerfile: dirigible/Dockerfile.backend
+    container_name: dirigible_backend
     networks:
       - dirigible_network
     ports:
@@ -96,18 +96,17 @@ services:
     environment:
       - SERVICE_NAME=service2  # Name of your service as registered in Keycloak
 
-  FullStack:
+  fullstack:
     build:
       context: .
-      dockerfile: Dockerfile.fullstack
-    container_name: dirigible_service3
+      dockerfile: dirigible/Dockerfile.fullstack
+    container_name: dirigible_fullstack
     networks:
       - dirigible_network
     ports:
       - "8083:8080"  # Map host port 8083 to container port 8080
     environment:
-      - SERVICE_NAME=service3  # Name of your service as registered in Keycloak
-      - DIRIGIBLE_HOME_URL=/services/web/alien_service/gen/index.html
+      - SERVICE_NAME="tabler fullstack  # Name of your service as registered in Keycloak
 
 volumes:
   postgres_primary_data:
