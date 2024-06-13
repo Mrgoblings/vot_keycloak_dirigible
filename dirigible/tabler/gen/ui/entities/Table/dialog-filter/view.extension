@@ -1,0 +1,5 @@
+{
+    "module": "tabler/gen/ui/entities/Table/dialog-filter/view.js",
+    "extensionPoint": "tabler-dialog-window",
+    "description": "tabler - Application Dialog Window"
+}

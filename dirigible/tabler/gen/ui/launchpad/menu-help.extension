@@ -1,0 +1,5 @@
+{
+    "module": "tabler/gen/ui/launchpad/menu-help.js",
+    "extensionPoint": "tabler-menu",
+    "description": "tabler - Application Menu"
+}

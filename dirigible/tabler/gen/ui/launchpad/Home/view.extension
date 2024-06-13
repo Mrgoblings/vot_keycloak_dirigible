@@ -1,0 +1,5 @@
+{
+    "module": "tabler/gen/ui/launchpad/Home/view.js",
+    "extensionPoint": "tabler-view",
+    "description": "tabler - Application View"
+}
