@@ -11,9 +11,9 @@ services:
       POSTGRES_REPLICATION_USER: replicator
       POSTGRES_REPLICATION_PASSWORD: replicator_password
     volumes:
-      - postgres_primary_data:/var/lib/postgresql/data
       - ./primary/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./primary/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - postgres_primary_data:/var/lib/postgresql/data
       - postgres_archive:/var/lib/postgresql/data/archive
     ports:
       - "5432:5432"
@@ -30,9 +30,9 @@ services:
       POSTGRES_REPLICATION_PASSWORD: replicator_password
       PRIMARY_HOST: postgres_primary
     volumes:
-      - postgres_standby_data:/var/lib/postgresql/data
       - ./standby/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./standby/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - postgres_standby_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
     depends_on:
@@ -56,22 +56,17 @@ services:
       - postgres_standby
 
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    build: ./keycloak
     container_name: keycloak
     environment:
-      DB_VENDOR: postgres
-      DB_ADDR: haproxy
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: keycloak
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - "2000:8080"
     depends_on:
       - haproxy
     command:
-      - start-dev
+      - start --optimized
 
 volumes:
   postgres_primary_data:
