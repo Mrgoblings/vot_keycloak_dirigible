@@ -92,32 +92,6 @@ services:
         - "-Dquarkus.http.port=8080"
         - "-Dquarkus.http.host-verification=false"
 
-  frontend:
-    build:
-      context: ./dirigible
-      dockerfile: "Dockerfile.frontend"
-    container_name: dirigible_frontend
-    networks:
-      - internal_network
-    ports:
-      - "8082:8080"  
-    environment:
-      - DIRIGIBLE_HOME_URL=/services/web/ide/
-      - SERVICE_NAME=frontend-client  # Name of your service as registered in Keycloak
-
-  backend:
-    build:
-      context: ./dirigible
-      dockerfile: "Dockerfile.backend"
-    container_name: dirigible_backend
-    networks:
-      - internal_network
-    ports:
-      - "8083:8080"  
-    environment:
-      - DIRIGIBLE_HOME_URL=/services/web/ide/
-      - SERVICE_NAME=backend-client  # Name of your service as registered in Keycloak
-
   fullstack:
     build:
       context: ./dirigible

@@ -58,28 +58,11 @@
     ],
     "roles": [
       {
-        "name": "user",
-        "description": "Regular user role"
-      },
-      {
         "name": "admin",
         "description": "Administrator role"
       }
     ],
     "users": [
-      {
-        "username": "user",
-        "enabled": true,
-        "credentials": [
-          {
-            "type": "password",
-            "value": "user"
-          }
-        ],
-        "roles": {
-          "realm": ["user"]
-        }
-      },
       {
         "username": "admin",
         "enabled": true,
