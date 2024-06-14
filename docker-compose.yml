@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres_primary:
     image: postgres:14
@@ -82,7 +80,12 @@ services:
       - haproxy
     volumes:
       - ./keycloak/realm-config.json:/tmp/realm-config.json:ro
-    command: ["-b", "0.0.0.0", "-Djboss.socket.binding.port-offset=1000"]
+    command:
+        - "start"
+        - "-Djboss.socket.binding.port-offset=1000"
+        - "-Dquarkus.http.host=0.0.0.0"
+        - "-Dquarkus.http.port=8080"
+        - "--optimized"  
 
   frontend:
     build:
@@ -128,6 +131,15 @@ volumes:
 networks:
   internal_network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
 
   database_network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.21.0.0/16
+
