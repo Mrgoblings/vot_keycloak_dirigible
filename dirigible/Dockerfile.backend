@@ -6,4 +6,3 @@ COPY tabler/gen/odata target/dirigible/repository/root/registry/public/tabler/ge
 COPY tabler/gen/schema target/dirigible/repository/root/registry/public/tabler/gen/schema
 
 COPY tabler/gen/tabler.openapi target/dirigible/repository/root/registry/public/tabler/gen/tabler.openapi
-

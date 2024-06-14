@@ -2,5 +2,3 @@ FROM dirigiblelabs/dirigible:latest
 
 COPY tabler/gen/ui target/dirigible/repository/root/registry/public/tabler/gen/ui
 COPY tabler/gen/index.html target/dirigible/repository/root/registry/public/tabler/gen/index.html
-
-ENV DIRIGIBLE_HOME_URL=/services/web/tabler/gen/index.html
