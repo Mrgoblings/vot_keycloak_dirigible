@@ -82,10 +82,15 @@ services:
       - ./keycloak/realm-config.json:/tmp/realm-config.json:ro
     command:
         - "start"
+        - "--optimized"
+        - --http-enabled=true
+        - --http-port=8080
+        - "--hostname-strict=false"
+        - "-Dquarkus.transaction-manager.enable-recovery=true"
         - "-Djboss.socket.binding.port-offset=1000"
         - "-Dquarkus.http.host=0.0.0.0"
         - "-Dquarkus.http.port=8080"
-        - "--optimized"  
+        - "-Dquarkus.http.host-verification=false"
 
   frontend:
     build:
@@ -134,12 +139,12 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: 172.22.0.0/16
 
   database_network:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 172.21.0.0/16
+        - subnet: 172.23.0.0/16
 
