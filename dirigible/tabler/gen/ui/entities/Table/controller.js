@@ -1,9 +1,14 @@
+import { env } from "sdk/core";
+
 angular.module('page', ["ideUI", "ideView", "entityApi"])
 	.config(["messageHubProvider", function (messageHubProvider) {
 		messageHubProvider.eventIdPrefix = 'tabler.entities.Table';
 	}])
 	.config(["entityApiProvider", function (entityApiProvider) {
-		entityApiProvider.baseUrl = "/services/ts/tabler/gen/api/entities/TableService.ts";
+		if(env.get("isDev"))
+			entityApiProvider.baseUrl = "http://backend:8080/services/ts/tabler/gen/api/entities/TableService.ts";
+		else
+			entityApiProvider.baseUrl = "/services/ts/tabler/gen/api/entities/TableService.ts";
 	}])
 	.controller('PageController', ['$scope', 'messageHub', 'entityApi', 'Extensions', function ($scope, messageHub, entityApi, Extensions) {
 

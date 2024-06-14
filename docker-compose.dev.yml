@@ -103,6 +103,7 @@ services:
       - "8084:8080" 
     environment:
       - DIRIGIBLE_HOME_URL=/services/web/ide/
+      - isDev=TRUE
       - SERVICE_NAME=fullstack-client  # Name of your service as registered in Keycloak
 
 volumes:
