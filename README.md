@@ -52,6 +52,8 @@ Once the project is up and running, you can start using the application. Here's 
 
 - **PostgreSQL**: Use PostgreSQL as the database for your application. You can configure PostgreSQL by updating the environment variables.
 
+- **High Availability Proxy (HAProxy)**: Use HAProxy as a load balancer for your PostgreSQL clusters. HAProxy ensures high availability and scalability for your application.
+
 ## Contributing
 We welcome contributions from the community! If you'd like to contribute to our project, please follow these guidelines:
 
@@ -60,7 +62,6 @@ We welcome contributions from the community! If you'd like to contribute to our 
 2. Make your changes and ensure that the project is still functioning correctly.
 
 3. Submit a pull request with a clear description of your changes.
-
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
